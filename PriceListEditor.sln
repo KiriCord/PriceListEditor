@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{53419EB6-FDAD-4D08-A658-438150A05D6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{23B16C98-0DCE-45BD-8F07-9EC764DB5E47}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B95A2D7C-5390-439A-9F50-2F9EFB9E78E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceListEditor.Domain", "PriceListEditor.Domain\PriceListEditor.Domain.csproj", "{298874BA-F807-45EF-B792-3474D99955D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceListEditor.Application", "PriceListEditor.Application\PriceListEditor.Application.csproj", "{A945F2A0-5BCF-4B63-A13B-58AB62FDCB3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F4A95BA5-E2C6-48E1-BD45-961C4C9211FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceListEditor.Persistence", "PriceListEditor.Persistence\PriceListEditor.Persistence.csproj", "{4ED4A196-3298-4620-B896-482207B61597}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceListEditor.WebAPI", "PriceListEditor.WebAPI\PriceListEditor.WebAPI.csproj", "{81A2CC5B-6BE3-490A-B021-611BF96DD8F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{298874BA-F807-45EF-B792-3474D99955D7} = {53419EB6-FDAD-4D08-A658-438150A05D6F}
+		{A945F2A0-5BCF-4B63-A13B-58AB62FDCB3D} = {53419EB6-FDAD-4D08-A658-438150A05D6F}
+		{4ED4A196-3298-4620-B896-482207B61597} = {23B16C98-0DCE-45BD-8F07-9EC764DB5E47}
+		{81A2CC5B-6BE3-490A-B021-611BF96DD8F3} = {B95A2D7C-5390-439A-9F50-2F9EFB9E78E4}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{298874BA-F807-45EF-B792-3474D99955D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{298874BA-F807-45EF-B792-3474D99955D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{298874BA-F807-45EF-B792-3474D99955D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{298874BA-F807-45EF-B792-3474D99955D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A945F2A0-5BCF-4B63-A13B-58AB62FDCB3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A945F2A0-5BCF-4B63-A13B-58AB62FDCB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A945F2A0-5BCF-4B63-A13B-58AB62FDCB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A945F2A0-5BCF-4B63-A13B-58AB62FDCB3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ED4A196-3298-4620-B896-482207B61597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ED4A196-3298-4620-B896-482207B61597}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ED4A196-3298-4620-B896-482207B61597}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ED4A196-3298-4620-B896-482207B61597}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81A2CC5B-6BE3-490A-B021-611BF96DD8F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81A2CC5B-6BE3-490A-B021-611BF96DD8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81A2CC5B-6BE3-490A-B021-611BF96DD8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81A2CC5B-6BE3-490A-B021-611BF96DD8F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
