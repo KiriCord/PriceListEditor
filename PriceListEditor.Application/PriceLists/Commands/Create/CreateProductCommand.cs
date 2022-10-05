@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using PriceListEditor.Application.Interfaces;
 using PriceListEditor.Domain;
 
@@ -31,6 +32,16 @@ public class CreateProductCommand : IRequest<Guid>
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return product.Id;
+        }
+    }
+
+    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+    {
+        public CreateProductCommandValidator()
+        {
+            RuleFor(createProductCommand => createProductCommand.IdPriceList).NotEqual(Guid.Empty);
+            RuleFor(createProductCommand => createProductCommand.ProductName).NotEmpty().MaximumLength(250);
+            RuleFor(createProductCommand => createProductCommand.ProductCode).NotEmpty();
         }
     }
 }

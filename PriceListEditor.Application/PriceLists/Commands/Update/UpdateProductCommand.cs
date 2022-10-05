@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PriceListEditor.Application.Interfaces;
 
@@ -34,6 +35,16 @@ public class UpdateProductCommand : IRequest
             await _dbContext.SaveChangesAsync(cancellationToken);
             
             return Unit.Value;
+        }
+    }
+
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+    {
+        public UpdateProductCommandValidator()
+        {
+            RuleFor(updProductCommand => updProductCommand.Id).NotEqual(Guid.Empty);
+            RuleFor(updProductCommand => updProductCommand.ProductName).NotEmpty().MaximumLength(250);
+            RuleFor(updProductCommand => updProductCommand.ProductCode).NotEmpty();
         }
     }
 }

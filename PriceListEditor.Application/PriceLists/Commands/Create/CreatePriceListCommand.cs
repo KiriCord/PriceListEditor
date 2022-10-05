@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using PriceListEditor.Application.Interfaces;
 using PriceListEditor.Domain;
 
@@ -7,10 +8,6 @@ namespace PriceListEditor.Application.PriceLists.Commands.Create;
 public class CreatePriceListCommand : IRequest<Guid>
 {
     public string? Name { get; set; }
-    public ICollection<Product> Products;
-
-    public CreatePriceListCommand() =>
-        Products = new List<Product>();
 
     public class CreatePriceListCommandHandler : IRequestHandler<CreatePriceListCommand, Guid>
     {
@@ -22,19 +19,24 @@ public class CreatePriceListCommand : IRequest<Guid>
         public async Task<Guid> Handle(CreatePriceListCommand request, 
             CancellationToken cancellationToken)
         {
-            //var priceCollection = request.Products;
-            
             var priceList = new PriceList
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
-                Products = request.Products
             };
             
             await _dbContext.PriceLists.AddAsync(priceList, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return priceList.Id;
+        }
+    }
+
+    public class CreatePriceListCommandValidator : AbstractValidator<CreatePriceListCommand>
+    {
+        public CreatePriceListCommandValidator()
+        {
+            RuleFor(createPriceListCommand => createPriceListCommand.Name).NotEmpty().MaximumLength(250);
         }
     }
 }

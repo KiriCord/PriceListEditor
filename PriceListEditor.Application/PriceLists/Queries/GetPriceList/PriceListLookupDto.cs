@@ -8,10 +8,6 @@ public class PriceListLookupDto : IMapWith<PriceList>
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }
-    public ICollection<Product> Products;
-
-    public PriceListLookupDto() =>
-        Products = new List<Product>();
 
     public void Mapping(Profile profile)
     {
@@ -19,9 +15,7 @@ public class PriceListLookupDto : IMapWith<PriceList>
             .ForMember(priceListDto => priceListDto.Id,
                 opt => opt.MapFrom(priceList => priceList.Id))
             .ForMember(priceListDto => priceListDto.Name,
-                opt => opt.MapFrom(priceList => priceList.Name))
-            .ForMember(priceListDto => priceListDto.Products,
-                opt => opt.MapFrom(priceList => priceList.Products));
-        
+                opt => opt.MapFrom(priceList => priceList.Name));
+
     }
 }

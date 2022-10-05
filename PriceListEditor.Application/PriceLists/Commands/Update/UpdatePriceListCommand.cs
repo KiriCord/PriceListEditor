@@ -1,7 +1,7 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PriceListEditor.Application.Interfaces;
-using PriceListEditor.Domain;
 
 namespace PriceListEditor.Application.PriceLists.Commands.Update;
 
@@ -9,7 +9,6 @@ public class UpdatePriceListCommand : IRequest
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }
-    public ICollection<Product> Products { get; set; }
 
     public class UpdatePriceListCommandHandler : IRequestHandler<UpdatePriceListCommand>
     {
@@ -29,12 +28,19 @@ public class UpdatePriceListCommand : IRequest
             }
 
             entity.Name = request.Name;
-            entity.Products = request.Products;
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }
+    }
 
+    public class UpdatePriceListCommandValidator : AbstractValidator<UpdatePriceListCommand>
+    {
+        public UpdatePriceListCommandValidator()
+        {
+            RuleFor(updProductCommand => updProductCommand.Id).NotEqual(Guid.Empty);
+            RuleFor(updProductCommand => updProductCommand.Name).NotEmpty().MaximumLength(250);
+        }
     }
 }

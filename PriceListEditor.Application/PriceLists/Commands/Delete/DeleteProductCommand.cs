@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using PriceListEditor.Application.Interfaces;
 
 namespace PriceListEditor.Application.PriceLists.Commands.Delete;
@@ -6,7 +7,6 @@ namespace PriceListEditor.Application.PriceLists.Commands.Delete;
 public class DeleteProductCommand : IRequest
 {
     public Guid Id { get; set; }
-    public Guid IdPriceList { get; set; }
 
     public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
     {
@@ -29,6 +29,14 @@ public class DeleteProductCommand : IRequest
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
+        }
+    }
+
+    public class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
+    {
+        public DeleteProductCommandValidator()
+        {
+            RuleFor(deleteProductCommand => deleteProductCommand.Id).NotEqual(Guid.Empty);
         }
     }
 }

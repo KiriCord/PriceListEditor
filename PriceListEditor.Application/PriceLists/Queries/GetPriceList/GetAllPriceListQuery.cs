@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PriceListEditor.Application.Interfaces;
@@ -30,6 +31,13 @@ public class GetAllPriceListQuery : IRequest<PriceListVm>
             }
 
             return new PriceListVm {PriceLists = priceList};
+        }
+    }
+
+    public class GetAllPriceListQueryValidator : AbstractValidator<GetAllPriceListQuery>
+    {
+        public GetAllPriceListQueryValidator()
+        {
         }
     }
 }
