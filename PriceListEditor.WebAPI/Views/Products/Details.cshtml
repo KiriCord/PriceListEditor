@@ -1,0 +1,104 @@
+﻿@model PriceListEditor.Application.PriceLists.Queries.GetPriceListDetails.DetailsListVm
+@* @model IEnumerable<PriceListEditor.WebAPI.Models.CreateProductDto> *@
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Product</title>
+</head>
+<body>
+<div class="row">
+    <div class="col">
+        <h1>Товары: </h1>
+    </div>
+    <div class="col text-right">
+        <a asp-controller="Products" asp-action="Create" asp-route-id="@ViewData["IdPriceList"]" class="btn btn-success">Добавить новый продукт</a>
+    </div>
+</div>
+<hr>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @* @Html.DisplayNameFor(model => model.Id) *@
+            №
+        </th>
+        <th>
+            @* @Html.DisplayNameFor(model => model.Name) *@
+            Наименование товара
+        </th>
+        <th>
+            @* @Html.DisplayNameFor(model => model.ShirtNo) *@
+            Артикул
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Products) {
+        <tr id="row_@item.Id">
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductCode)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deProdlModal" onclick="ConfirmDelete('@item.Id')">
+                    Удалить
+                </a>
+                <div class="modal fade" id="deProdlModal" tabindex="-1" aria-labelledby="delProdModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="delProdModalLabel">Подтверждение удаления товара</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                            </div>
+                            <div class="modal-body">
+                                Вы действительно хотит удалить данный прайс-лист?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                <button type="button" class="btn btn-danger" onclick="DeleteEmployee()">Удалить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+</body>
+</html>
+
+<input type="hidden" id="hiddenId" />
+
+@section scripts{
+    <script>
+        let ConfirmDelete = function (Id) {
+            $("#hiddenId").val(Id);
+            $("#deProdlModal").modal('show');
+        }
+        var DeleteEmployee = function () {
+            var empId = $("#hiddenId").val();
+            $.ajax({
+                type: "POST",
+                url: "/Products/Delete/",
+                data: { Id: empId },
+                success: function (result) {        
+                    $("#deProdlModal").modal("hide");
+                    $("#row_" + empId).remove();
+                }
+            })
+        }
+</script>
+}

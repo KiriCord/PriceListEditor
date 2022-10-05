@@ -8,7 +8,7 @@ public class DeleteProductCommand : IRequest
     public Guid Id { get; set; }
     public Guid IdPriceList { get; set; }
 
-    public class DeleteProductCommandHandler
+    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
     {
         private readonly IPriceListEditorDbContext _dbContext;
 
@@ -20,7 +20,7 @@ public class DeleteProductCommand : IRequest
             var entity = await _dbContext.Products
                 .FindAsync(new object[] { request.Id }, cancellationToken);
 
-            if (entity == null || entity.IdPriceList != request.IdPriceList)
+            if (entity == null)
             {
                 throw new Exception();
             }

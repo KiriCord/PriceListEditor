@@ -23,7 +23,7 @@ public class UpdatePriceListCommand : IRequest
             var entity = await _dbContext.PriceLists.FirstOrDefaultAsync(priceList => 
                 priceList.Id == request.Id, cancellationToken);
 
-            if (entity == null)
+            if (entity == null || entity.Id != request.Id)
             {
                 throw new Exception();
             }

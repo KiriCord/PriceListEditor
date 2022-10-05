@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PriceListEditor.Application.Interfaces;
 
 namespace PriceListEditor.Application.PriceLists.Queries.GetPriceListDetails;
 
-public class GetPriceListDetailsQuery : IRequest<PriceListDetailsVm>
+public class GetPriceListDetailsQuery : IRequest<DetailsListVm>
 {
     public Guid Id { get; set; }
-    public Guid IdPriceList { get; set; }
 
     public class GetPriceListDetailsQueryHandler 
-        : IRequestHandler<GetPriceListDetailsQuery, PriceListDetailsVm>
+        : IRequestHandler<GetPriceListDetailsQuery, DetailsListVm>
     {
         private readonly IPriceListEditorDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -19,19 +20,23 @@ public class GetPriceListDetailsQuery : IRequest<PriceListDetailsVm>
         public GetPriceListDetailsQueryHandler(IPriceListEditorDbContext dbContext, IMapper mapper) => 
             (_dbContext, _mapper) = (dbContext, mapper);
 
-        public async Task<PriceListDetailsVm> Handle(GetPriceListDetailsQuery request, 
+        public async Task<DetailsListVm> Handle(GetPriceListDetailsQuery request, 
             CancellationToken cancellationToken)
         {
-            var entity = await _dbContext.Products.
-                FirstOrDefaultAsync(product => 
-                    product.Id == request.Id, cancellationToken);
+            var productsQuery = await _dbContext.Products
+                .Where(product => product.IdPriceList == request.Id)
+                .ProjectTo<PriceListDetailsVm>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken);
 
-            if (entity == null || entity.IdPriceList != request.IdPriceList)
-            {
-                throw new Exception();
-            }
+            return new DetailsListVm() { Products = productsQuery };
+        }
+    }
 
-            return _mapper.Map<PriceListDetailsVm>(entity);
+    public class GetPriceListDetailsQueryValidator : AbstractValidator<GetPriceListDetailsQuery>
+    {
+        public GetPriceListDetailsQueryValidator()
+        {
+            RuleFor(x=> x.Id).NotEqual(Guid.Empty);
         }
     }
 }

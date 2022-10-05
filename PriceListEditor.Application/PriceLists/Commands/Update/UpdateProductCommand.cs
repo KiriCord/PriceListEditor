@@ -11,16 +11,19 @@ public class UpdateProductCommand : IRequest
     public string? ProductName { get; set; }
     public int ProductCode { get; set; }
     
-    public class UpdateProductCommandHandler
+    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
     {
         private readonly IPriceListEditorDbContext _dbContext;
 
-        public async Task<Unit> Handler(UpdateProductCommand request, CancellationToken cancellationToken)
+        public UpdateProductCommandHandler(IPriceListEditorDbContext dbContext) =>
+            _dbContext = dbContext;
+
+        public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var entity = await _dbContext.Products.FirstOrDefaultAsync(product => 
                 product.Id == request.Id, cancellationToken);
 
-            if (entity == null || entity.IdPriceList != request.IdPriceList)
+            if (entity == null)
             {
                 throw new Exception();
             }
