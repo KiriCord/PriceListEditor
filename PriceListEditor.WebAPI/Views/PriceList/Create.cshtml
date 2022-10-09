@@ -13,17 +13,100 @@
 <body>
 <h1>Создание нового прайс-листа</h1>
 <div class="row">
-    <form asp-action="Create" method="post">
-        <div class="form-group">
+    <div class="form-group">
             <label>Название прайс-листа:</label>
-            <input asp-for="Name" class="form-control"/>
-        </div>
+            <input id="namePriceList" class="form-control"/>
+    </div>
         <hr/>
         <div class="form-group">
-            <input type="submit" value="Создать" class="btn btn-primary" />
+            <input onclick="CreatePriceList()" type="submit" value="Создать" class="btn btn-primary" />
             <a asp-action="All" class="btn btn-secondary">Отмена</a>
         </div>
-    </form>
+        <hr/>
+        
+        <table class="table">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Название колонки</th>
+                <th>Тип колонки</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="tbodyTable">
+            </tbody>
+        </table>
+        <button onclick="CreateColumn()" class="btn btn-warning">Добавить колонку</button>
 </div>
 </body>
+
+@section scripts{
+    <script>
+    var rowId = [];
+    var id = 0;
+     const getNextId = () => {
+                    id = id + 1;
+                    rowId.push(id);
+                    return id;
+                    }
+        const CreateColumn = () => {
+         var newId = getNextId();
+            var tr = `<tr id="row_${newId}">
+                                     <td>${newId}</td>
+                                      <td class="total""><input id="columnName" name="columnName" type="text"/></td>
+                                      <td class="totalList">
+                                          <select id="typeList" name="Type">
+                                              <option value="number">Число</option>
+                                              <option value="text">Однострочный текст</option>
+                                              <option value="textarea">Многострочный текст</option>
+                                          </select>
+                                      </td>
+                                      <td>
+                                          <button onclick="DeleteColumn(${newId})" type="button" class="btn btn-danger">Удалить</button>
+                                      </td>
+                                  </tr>`;
+            $("#tbodyTable").append(tr);
+            }
+            
+         const DeleteColumn = (newId) => {
+              $("#row_" + newId).remove();
+            }
+            
+         const CreatePriceList = () => {
+            let namePriceList = $("#namePriceList").val();
+            let allColumnName = $(".total").map((i, el) => { return $("#columnName", el).val()}).get();
+            let allListValue = $(".totalList").map((i, el) => { return $("#typeList", el).val()}).get();
+            
+            
+            const _id = "@Guid.NewGuid()";
+          
+            const dataProductColumns = {
+                PriceListId : _id,
+                ProductName : "tester",
+                ProductCode: 1,
+                Columns : allColumnName.map((allColumnName, i) => ({Name : allColumnName, Type : allListValue[i]}))
+            };
+            
+            console.log(namePriceList);
+            console.log(dataProductColumns);
+            
+            $.ajax({
+            method: 'POST',
+            url: '/PriceList/Create/',
+            data: {Id: _id ,Name : namePriceList},
+            success : function (result) {
+                $.ajax({
+                method: 'POST',
+                url: '/Products/Create/',
+                data: dataProductColumns,
+                success : function(res) {
+                    window.location.href = '@Url.Action("All", "PriceList")';
+                        }
+                    })
+                }
+            })
+            
+         }
+    </script>
+}
 </html>

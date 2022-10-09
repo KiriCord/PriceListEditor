@@ -1,4 +1,5 @@
-﻿@model PriceListEditor.WebAPI.Models.CreateProductDto
+﻿@using PriceListEditor.Domain
+@model PriceListEditor.Application.PriceLists.Queries.GetPriceListDetails.DetailsListVm
 
 @{
     ViewData["Title"] = "NewProduct";
@@ -14,22 +15,82 @@
 <h1>Добавление товара</h1>
 <hr>
 <div class="row">
-    <form asp-action="Create" method="post">
-        <div class="form-group">
-            <label>Название товара:</label>
-            <input asp-for="ProductName" class="form-control"/>
+    <div class="form-group">
+        <label>Название товара:</label>
+        <input id="productName" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label>Ариткул:</label>
+        <input type="number" id="productCode" class="form-control"/>
         </div>
-        <div class="form-group">
-            <label>Ариткул:</label>
-            <input type="number" asp-for="ProductCode" class="form-control"/>
-            <input type="hidden" asp-for="IdPriceList" value="@ViewData["IdPriceList"]"/>
-            </div>
+    <div id="allcol" class="form-group">
+            @foreach (var prod in Model.Products)
+            {
+                @foreach (var col in prod.Columns)
+                {
+                    <label class="colLabels">@col.Name</label>
+                    @if (col.Type == TypeString.textarea)
+                    {
+                        <textarea id="col" type="@col.Type" class="colInput form-control"></textarea>
+                    }
+                    else
+                    {
+                        <input id="col" type="@col.Type" class="colInput form-control"/>
+                    }
+                    <input type="hidden" value="@col.Id" class="colHiddenId"/>
+                }
+                break;
+            }
+        </div>
         <hr/>
         <div class="form-group">
-            <input type="submit" value="Сохранить" class="btn btn-primary"/>
+            <input onclick="GetAllValue()" type="button" value="Сохранить" class="btn btn-primary"/>
             <a asp-controller="PriceList" asp-action="All" class="btn btn-secondary">Отмена</a>
         </div>
-    </form>
 </div>
 </body>
 </html>
+
+@section scripts{
+    <script>
+        const GetAllValue = () => {
+          const productName = $('#productName').val();
+          const productCode = $('#productCode').val();
+          const colTypes = [];
+          const colValues = [];
+          const colNames = [];
+          const colId = [];
+           $('.colInput').each(function () {
+              colValues.push($(this).val());
+              colTypes.push($(this).attr('type'));
+              });
+           $('.colLabels').each(function () {
+                 colNames.push($(this).text());
+              });
+           $('.colHiddenId').each(function () {
+                  colId.push($(this).val());
+              });
+           
+           const dataProduct = {
+               PriceListId : "@ViewData["IdPriceList"]",
+               ProductName : productName,
+               ProductCode : productCode,
+               Columns : colTypes.map((allCol, i) => ({Id:colId[i], Name : colNames[i], 
+                                            Value : colValues[i], Type : allCol}))
+               }
+
+           console.log(dataProduct);
+          $.ajax({
+          type: "POST",
+          url: "/Products/Create/@ViewData["IdPriceList"]",
+          data: dataProduct,
+          success : function (result) {  
+              window.location.href = '@Url.Action("Details", "Products", new {id = @ViewData["IdPriceList"]})';
+             }
+          })
+        
+          
+        }
+            
+</script>
+}

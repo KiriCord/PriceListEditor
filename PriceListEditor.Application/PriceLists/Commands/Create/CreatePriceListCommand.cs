@@ -7,8 +7,9 @@ namespace PriceListEditor.Application.PriceLists.Commands.Create;
 
 public class CreatePriceListCommand : IRequest<Guid>
 {
-    public string? Name { get; set; }
-
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    
     public class CreatePriceListCommandHandler : IRequestHandler<CreatePriceListCommand, Guid>
     {
         private readonly IPriceListEditorDbContext _dbContext;
@@ -21,7 +22,7 @@ public class CreatePriceListCommand : IRequest<Guid>
         {
             var priceList = new PriceList
             {
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 Name = request.Name,
             };
             

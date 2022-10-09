@@ -29,11 +29,10 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.ActionLink($"{@item.Name}", "Details", "Products", new {id = item.Id})
                 </td>
                 <td>
-                    @Html.ActionLink("Детали", "Details","Products" , new { id = item.Id }, new { @class = "btn btn-secondary" })
-                    @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Детали", "Details","Products" , new { id = item.Id }, new { @class = "btn btn-primary" })
                     <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delModal" onclick="ConfirmDelete('@item.Id')">
                         Удалить
                     </a>

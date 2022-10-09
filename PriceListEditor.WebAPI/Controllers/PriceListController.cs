@@ -5,7 +5,6 @@ using PriceListEditor.Application.PriceLists.Commands.Create;
 using PriceListEditor.Application.PriceLists.Commands.Delete;
 using PriceListEditor.Application.PriceLists.Commands.Update;
 using PriceListEditor.Application.PriceLists.Queries.GetPriceList;
-using PriceListEditor.Application.PriceLists.Queries.GetPriceListDetails;
 using PriceListEditor.WebAPI.Models;
 
 namespace PriceListEditor.WebAPI.Controllers;

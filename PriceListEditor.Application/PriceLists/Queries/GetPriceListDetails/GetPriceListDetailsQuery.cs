@@ -24,11 +24,12 @@ public class GetPriceListDetailsQuery : IRequest<DetailsListVm>
             CancellationToken cancellationToken)
         {
             var productsQuery = await _dbContext.Products
-                .Where(product => product.IdPriceList == request.Id)
+                .Where(product => product.PriceList.Id == request.Id)
                 .ProjectTo<PriceListDetailsVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
+            
 
-            return new DetailsListVm() { Products = productsQuery };
+            return new DetailsListVm() { Products = productsQuery};
         }
     }
 

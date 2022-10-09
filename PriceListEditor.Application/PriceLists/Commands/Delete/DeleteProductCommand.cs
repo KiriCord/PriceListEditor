@@ -19,6 +19,7 @@ public class DeleteProductCommand : IRequest
         {
             var entity = await _dbContext.Products
                 .FindAsync(new object[] { request.Id }, cancellationToken);
+            
 
             if (entity == null)
             {

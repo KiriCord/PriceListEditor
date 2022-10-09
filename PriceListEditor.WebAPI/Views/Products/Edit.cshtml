@@ -1,11 +1,11 @@
-﻿@model PriceListEditor.WebAPI.Models.UpdateProductDto
+﻿@using PriceListEditor.Domain
+@model PriceListEditor.Application.PriceLists.Queries.GetProductById.ProductListByIdVm;
 
 @{
     ViewData["Title"] = "EditProduct";
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
     <title>Редактирование товара</title>
@@ -13,21 +13,79 @@
 <body>
 <h1>Редактирование товара</h1>
 <div class="row">
-    <form asp-action="Edit" method="post">
+    @foreach (var prod in Model.Products)
+    {
         <div class="form-group">
             <label>Название товара:</label>
-            <input asp-for="ProductName" class="form-control"/>
+            <input value="@prod.ProductName" id="productName" class="form-control"/>
         </div>
         <div class="form-group">
             <label>Артикул:</label>
-            <input type="number" asp-for="ProductCode" class="form-control"/>
-            </div>
-        <hr/>
-        <div class="form-group">
-            <input type="submit" value="Редактировать" class="btn btn-primary" />
-            <a asp-controller="PriceList" asp-action="All" class="btn btn-secondary">Отмена</a>
+            <input value="@prod.ProductCode" type="number" id="productCode" class="form-control"/>
         </div>
-    </form>
+        <div id="allcol" class="form-group">
+            @foreach (var col in prod.Columns)
+            {
+                <label class="colLabels">@col.Name</label>
+                @if (col.Type == TypeString.textarea)
+                {
+                    <textarea id="col" type="@col.Type" class="colInput form-control">@col.Value</textarea>
+                }
+                else
+                {
+                    <input id="col" value="@col.Value" type="@col.Type" class="colInput form-control"/>
+                }
+                <input type="hidden" value="@col.Id" class="colHiddenId"/>
+            }
+            break;
+        </div>
+        break;
+        }
+    <hr/>
+    <div class="form-group">
+        <input onclick="GetAllValue()" type="button" value="Редактировать" class="btn btn-primary"/>
+        <a asp-controller="PriceList" asp-action="All" class="btn btn-secondary">Отмена</a>
+    </div>
 </div>
 </body>
 </html>
+
+@section scripts{
+    <script>
+        const GetAllValue = () => {
+          const productName = $('#productName').val();
+          const productCode = $('#productCode').val();
+          const colTypes = [];
+          const colValues = [];
+          const colNames = [];
+          const colId = [];
+           $('.colInput').each(function () {
+              colValues.push($(this).val());
+              colTypes.push($(this).attr('type'));
+              });
+           $('.colLabels').each(function () {
+                 colNames.push($(this).text());
+              });
+           $('.colHiddenId').each(function () {
+                  colId.push($(this).val());
+              });
+           
+           const dataProduct = {
+               ProductName : productName,
+               ProductCode : productCode,
+               Columns : colTypes.map((allCol, i) => ({Id:colId[i], Name : colNames[i], 
+                                            Value : colValues[i], Type : allCol}))
+               }
+
+          console.log(dataProduct);
+          $.ajax({
+          type: "POST",
+          url: "/Products/Edit/@ViewData["ProductId"]",
+          data: dataProduct,
+          success : function (result) {  
+              window.location.href = '@Url.Action("All", "PriceList")';
+             }
+          })
+        }        
+</script>
+}

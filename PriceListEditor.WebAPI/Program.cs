@@ -2,6 +2,7 @@ using PriceListEditor.Application;
 using PriceListEditor.Application.Common.Mappings;
 using PriceListEditor.Application.Interfaces;
 using PriceListEditor.Persistence;
+using PriceListEditor.WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ using (var scope = builder.Services.BuildServiceProvider().CreateScope())
     }
     catch (Exception exception)
     {
+        Console.WriteLine(exception);
         throw new Exception();
     }
 }
@@ -36,6 +38,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

@@ -1,5 +1,4 @@
 ﻿@model PriceListEditor.Application.PriceLists.Queries.GetPriceListDetails.DetailsListVm
-@* @model IEnumerable<PriceListEditor.WebAPI.Models.CreateProductDto> *@
 @{
     ViewData["Title"] = "Details";
 }
@@ -11,6 +10,7 @@
     <title>Product</title>
 </head>
 <body>
+<div class="text-center">
 <div class="row">
     <div class="col">
         <h1>Товары: </h1>
@@ -20,39 +20,45 @@
     </div>
 </div>
 <hr>
-<table class="table">
+<table id="myTable" class="table table-bordered">
     <thead>
     <tr>
-        <th>
-            @* @Html.DisplayNameFor(model => model.Id) *@
-            №
-        </th>
-        <th>
-            @* @Html.DisplayNameFor(model => model.Name) *@
-            Наименование товара
-        </th>
-        <th>
-            @* @Html.DisplayNameFor(model => model.ShirtNo) *@
-            Артикул
-        </th>
+        <th>Наименование товара</th>
+        <th>Артикул</th>
+        @foreach (var product in Model.Products)
+        {
+            foreach (var column in product.Columns)
+            {
+                <th>
+                    @Html.DisplayFor(columItem => column.Name)
+                </th>
+            }
+            break;
+        }
         <th></th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.Products) {
-        <tr id="row_@item.Id">
+    @foreach (var prod in Model.Products)
+    {
+        if (prod.ProductCode == 1)
+            continue;
+        <tr id="row_@prod.Id">
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.DisplayFor(modelItem => prod.ProductName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
+                @Html.DisplayFor(modelItem => prod.ProductCode)
             </td>
+            @foreach (var column in prod.Columns)
+            {
+                <td>
+                    @Html.DisplayFor(columItem => column.Value)
+                </td>
+            }
             <td>
-                @Html.DisplayFor(modelItem => item.ProductCode)
-            </td>
-            <td>
-                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
-                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deProdlModal" onclick="ConfirmDelete('@item.Id')">
+                @Html.ActionLink("Редактировать", "Edit", new { id = prod.Id }, new { @class = "btn btn-primary" })
+                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deProdlModal" onclick="ConfirmDelete('@prod.Id')">
                     Удалить
                 </a>
                 <div class="modal fade" id="deProdlModal" tabindex="-1" aria-labelledby="delProdModalLabel" aria-hidden="true">
@@ -77,6 +83,7 @@
     }
     </tbody>
 </table>
+</div>
 </body>
 </html>
 
@@ -84,6 +91,11 @@
 
 @section scripts{
     <script>
+    
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
+        
         let ConfirmDelete = function (Id) {
             $("#hiddenId").val(Id);
             $("#deProdlModal").modal('show');

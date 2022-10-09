@@ -4,7 +4,6 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PriceListEditor.Application.Interfaces;
-using PriceListEditor.Domain;
 
 namespace PriceListEditor.Application.PriceLists.Queries.GetPriceList;
 

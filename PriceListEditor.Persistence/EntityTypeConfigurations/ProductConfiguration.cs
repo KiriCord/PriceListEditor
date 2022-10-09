@@ -10,7 +10,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         builder.HasKey(product => product.Id);
         builder.HasIndex(product => product.Id).IsUnique();
-        builder.HasIndex(product => product.ProductCode).IsUnique();
+        builder.HasOne(u => u.PriceList)
+            .WithMany(c => c.Products)
+            .HasForeignKey(k => k.PriceListId);
+        builder.Property(product => product.ProductCode);
         builder.Property(product => product.ProductName).HasMaxLength(250);
     }
 }

@@ -5,6 +5,7 @@ using PriceListEditor.Application.PriceLists.Commands.Create;
 using PriceListEditor.Application.PriceLists.Commands.Delete;
 using PriceListEditor.Application.PriceLists.Commands.Update;
 using PriceListEditor.Application.PriceLists.Queries.GetPriceListDetails;
+using PriceListEditor.Application.PriceLists.Queries.GetProductById;
 using PriceListEditor.WebAPI.Models;
 
 namespace PriceListEditor.WebAPI.Controllers;
@@ -25,11 +26,10 @@ public class ProductsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Create(Guid id)
+    public async Task<IActionResult> Create(Guid id)
     {
         ViewData["IdPriceList"] = id;
-        Console.WriteLine(id);
-        return View();
+        return View(await _mediator.Send(new GetPriceListDetailsQuery {Id = id}));
     }
  
 
@@ -37,13 +37,17 @@ public class ProductsController : Controller
     public async Task<IActionResult> Create(CreateProductDto model)
     {
         var command = _mapper.Map<CreateProductCommand>(model);
-        command.IdPriceList = model.IdPriceList;
+        command.PriceListId = model.PriceListId;
         await _mediator.Send(command);
         return RedirectToAction("All", "PriceList");
     }
     
     [HttpGet]
-    public IActionResult Edit() => View();
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        ViewData["ProductId"] = id;
+        return View(await _mediator.Send(new GetProductByIdQueries() {Id = id}));
+    }
 
     [HttpPost]
     public async Task<IActionResult> Edit(UpdateProductDto model)

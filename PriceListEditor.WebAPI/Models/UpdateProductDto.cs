@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PriceListEditor.Application.Common.Mappings;
 using PriceListEditor.Application.PriceLists.Commands.Update;
+using PriceListEditor.Domain;
 
 namespace PriceListEditor.WebAPI.Models;
 
@@ -9,6 +10,7 @@ public class UpdateProductDto : IMapWith<UpdateProductCommand>
     public Guid Id { get; set; }
     public string? ProductName { get; set; }
     public int ProductCode { get; set; }
+    public List<Column> Columns { get; set; }
 
     public void Mapping(Profile profile)
     {
@@ -21,6 +23,9 @@ public class UpdateProductDto : IMapWith<UpdateProductCommand>
                     opt.MapFrom(priceListDto => priceListDto.ProductName))
             .ForMember(productCommand => productCommand.ProductCode,
                 opt =>
-                    opt.MapFrom(productCommand => productCommand.ProductCode));
+                    opt.MapFrom(productCommand => productCommand.ProductCode))
+            .ForMember(productCommand => productCommand.Columns,
+            opt =>
+                opt.MapFrom(productCommand => productCommand.Columns));
     }
 }
