@@ -16,3 +16,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+th {
+  cursor : pointer;
+  text-decoration: none;
+}
+
+th:hover {
+  text-decoration: underline;
+}
