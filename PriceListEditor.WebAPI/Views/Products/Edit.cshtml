@@ -37,7 +37,6 @@
                 }
                 <input type="hidden" value="@col.Id" class="colHiddenId"/>
             }
-            break;
         </div>
         break;
         }
@@ -77,7 +76,6 @@
                                             Value : colValues[i], Type : allCol}))
                }
 
-          console.log(dataProduct);
           $.ajax({
           type: "POST",
           url: "/Products/Edit/@ViewData["ProductId"]",

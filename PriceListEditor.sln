@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceListEditor.Domain", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceListEditor.Application", "PriceListEditor.Application\PriceListEditor.Application.csproj", "{A945F2A0-5BCF-4B63-A13B-58AB62FDCB3D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F4A95BA5-E2C6-48E1-BD45-961C4C9211FB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceListEditor.Persistence", "PriceListEditor.Persistence\PriceListEditor.Persistence.csproj", "{4ED4A196-3298-4620-B896-482207B61597}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceListEditor.WebAPI", "PriceListEditor.WebAPI\PriceListEditor.WebAPI.csproj", "{81A2CC5B-6BE3-490A-B021-611BF96DD8F3}"

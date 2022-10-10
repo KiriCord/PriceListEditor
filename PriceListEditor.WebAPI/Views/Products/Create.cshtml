@@ -79,7 +79,6 @@
                                             Value : colValues[i], Type : allCol}))
                }
 
-           console.log(dataProduct);
           $.ajax({
           type: "POST",
           url: "/Products/Create/@ViewData["IdPriceList"]",
@@ -87,10 +86,7 @@
           success : function (result) {  
               window.location.href = '@Url.Action("Details", "Products", new {id = @ViewData["IdPriceList"]})';
              }
-          })
-        
-          
-        }
-            
+          })      
+        }         
 </script>
 }

@@ -3,6 +3,16 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Тестовое задание на разработку редактора прайс-листов. by Рахманов Артур</p>
+    <h1 class="display-4">Добро пожаловать</h1>
+    <p>Тестовое задание на разработку редактора прайс-листов</p>
+    <p>Выполнил - Рахманов Артур</p>
+    <p>База данных разворачивалась в Docker контейнере</p>
+    <p>Запуск командой:</p>
+    <p><code>docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=test123Pass" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest</code></p>
+    <p>В качестве дополнительных инструментов использовались:</p>
+    <p>Пакет MediatR, который <s>реализует паттерн Посредник</s></p>
+    <p>Паттерн CQRS</p>
+    <p>Пакет AutoMapper</p>
+    <hr>
+    <a class="btn btn-outline-primary" asp-area="" asp-controller="PriceList" asp-action="All">Прайс-листы</a>
 </div>

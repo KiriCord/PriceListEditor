@@ -57,7 +57,7 @@
                 </td>
             }
             <td>
-                @Html.ActionLink("Редактировать", "Edit", new { id = prod.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Редактировать", "Edit", new { id = prod.Id }, new { @class = "btn btn-info" })
                 <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deProdlModal" onclick="ConfirmDelete('@prod.Id')">
                     Удалить
                 </a>
@@ -112,10 +112,7 @@
         };
     
     const sortColumn = function(index) {
-            // Получить текущее направление
             const direction = directions[index] || 'asc';
-    
-            // Фактор по направлению
             const multiplier = (direction === 'asc') ? 1 : -1;
     
             const newRows = Array.from(rows);
@@ -134,15 +131,12 @@
                 }
             });
     
-            // Удалить старые строки
             [].forEach.call(rows, function(row) {
                 tableBody.removeChild(row);
             });
     
-            // Поменять направление
             directions[index] = direction === 'asc' ? 'desc' : 'asc';
     
-            // Добавить новую строку
             newRows.forEach(function(newRow) {
                 tableBody.appendChild(newRow);
             });

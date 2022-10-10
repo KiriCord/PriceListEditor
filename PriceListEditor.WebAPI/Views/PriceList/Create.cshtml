@@ -87,9 +87,6 @@
                 Columns : allColumnName.map((allColumnName, i) => ({Name : allColumnName, Type : allListValue[i]}))
             };
             
-            console.log(namePriceList);
-            console.log(dataProductColumns);
-            
             $.ajax({
             method: 'POST',
             url: '/PriceList/Create/',
